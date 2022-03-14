@@ -30,7 +30,7 @@ If you use this code or models in your research and find it helpful, please cite
 @inproceedings{ozdenizci2022cvpr,
   title={Improving robustness against stealthy weight bit-flip attacks by output code matching},
   author={Ozan \"{O}zdenizci and Robert Legenstein},
-  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
   year={2022}
 }
 ```
@@ -39,4 +39,8 @@ If you use this code or models in your research and find it helpful, please cite
 
 Authors of this work are affiliated with Graz University of Technology, Institute of Theoretical Computer Science, and Silicon Austria Labs, TU Graz - SAL Dependable Embedded Systems Lab, Graz, Austria. This work has been supported by the "University SAL Labs" initiative of Silicon Austria Labs (SAL) and its Austrian partner universities for applied fundamental research for electronic based systems.
 
+Parts of this code repository is based on the following works:
 
+* https://github.com/jiawangbai/TA-LBF
+* https://github.com/adnansirajrakin/T-BFA
+* https://github.com/elliothe/BFA
