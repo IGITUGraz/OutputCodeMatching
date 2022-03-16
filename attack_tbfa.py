@@ -19,17 +19,14 @@ parser.add_argument('--num_classes', '-c', default=10, type=int, help='number of
 parser.add_argument('--arch', '-a', type=str, default='resnet20_quan', help='model architecture')
 parser.add_argument('--bits', type=int, default=8, help='quantization bits')
 parser.add_argument('--ocm', action='store_true', help='output layer coding with bit strings')
-parser.add_argument('--randcode', action="store_true", help='enable random output code matching')
-parser.add_argument('--output_act', type=str, default='linear', help='output act. (either linear and tanh is supported)')
+parser.add_argument('--output_act', type=str, default='linear', help='output act. (only linear and tanh is supported)')
 parser.add_argument('--code_length', '-cl', default=16, type=int, help='length of codewords')
 parser.add_argument('--outdir', type=str, default='results/', help='folder where the model is saved')
-parser.add_argument('--batch', '-b', default=128, type=int, metavar='N', help='batchsize (default: 128)')
+parser.add_argument('--batch', '-b', default=128, type=int, metavar='N', help='Mini-batch size (default: 128)')
 parser.add_argument('--gpu', default="0", type=str, help='id(s) for CUDA_VISIBLE_DEVICES')
 parser.add_argument('--iters', type=int, default=5000, help='max attack iterations (def: 5000)')
 parser.add_argument('--source_start', type=int, default=0, help='source_start')
 parser.add_argument('--source_end', type=int, default=50, help='source_end')
-parser.add_argument('--source_item', type=int, default=-1, help='source class item specified')
-parser.add_argument('--target_item', type=int, default=-1, help='target class item specified')
 parser.add_argument('--avgs', type=int, default=5, help='average of how many rounds')
 parser.add_argument('--seed', type=int, default=1, metavar='S', help='random seed (default: 1)')
 args = parser.parse_args()
@@ -50,7 +47,7 @@ else:
     device = torch.device('cuda')
     print('Using gpu: ' + args.gpu)
 
-    
+
 def data_gen():
     if args.dataset == 'CIFAR10':
         tr_test = transforms.Compose([transforms.ToTensor(),
@@ -74,7 +71,7 @@ def data_gen():
         num_source, num_others = 50, 49950
         im_size = 224
     else:
-        print('Dataset not implemented!!')
+        print('Dataset not implemented, will crash soon...')
         pass
 
     # dataT and targetT will contain only one class images whose image will be missclassified
@@ -93,9 +90,9 @@ def data_gen():
                 xn += 1
 
     data1, target1 = data[0:args.auxiliary, :, :, :], target[0:args.auxiliary]          # only separating validation samples
-    data2, target2 = data[args.auxiliary:, :, :, :], target[args.auxiliary:]            # separating rest of the samples
+    data2, target2 = data[args.auxiliary:, :, :, :], target[args.auxiliary:]            # separating the rest
     dataT1, targetT1 = dataT[0:args.attacksamp, :, :, :], targetT[0:args.attacksamp]    # separating "to be attacked" test samples
-    dataT2, targetT2 = dataT[num_source - args.attacksamp:num_source, :, :, :], targetT[num_source - args.attacksamp:num_source]  # separating rest of the samples from source class
+    dataT2, targetT2 = dataT[num_source - args.attacksamp:num_source, :, :, :], targetT[num_source - args.attacksamp:num_source]  # separating the rest from source class
 
     return data1, target1, data2, target2, dataT1, targetT1, dataT2, targetT2
 
@@ -166,8 +163,6 @@ def main():
     if args.dataset == 'CIFAR10':
         args.attacksamp, args.auxiliary = 500, 500
         source_list = list(range(10))[args.source_start:args.source_end]
-        if args.source_item != -1:
-            source_list = [args.source_item]
         target_list = []
         for s in source_list:
             if s == 0:
@@ -176,14 +171,10 @@ def main():
                 target_list.append([8, 0])
             else:
                 target_list.append([s - 1, s + 1])
-        if args.target_item != -1:
-            target_list = [[args.target_item]]
     elif args.dataset == 'CIFAR100' or args.dataset == 'ImageNet':
         args.attacksamp = 50 if args.dataset == 'CIFAR100' else 25
         args.auxiliary = 50 if args.dataset == 'CIFAR100' else 25
         source_list = list(range(50))[args.source_start:args.source_end]
-        if args.source_item != -1:
-            source_list = [args.source_item]
         target_list = []
         for s in source_list:
             if s == 0:
@@ -192,8 +183,6 @@ def main():
                 target_list.append([48, 0])
             else:
                 target_list.append([s - 1, s + 1])
-        if args.target_item != -1:
-            target_list = [[args.target_item]]
 
     # Load model architecture
     if args.ocm:
