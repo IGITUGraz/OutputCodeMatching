@@ -31,10 +31,10 @@ parser.add_argument('--gpu', default="0", type=str, help='id(s) for CUDA_VISIBLE
 parser.add_argument('--print-freq', default=250, type=int, help='print frequency (default: 250)')
 parser.add_argument('--clustering', '-pc', action='store_true', help='add piecewise clustering regularization')
 parser.add_argument('--lambda_coeff', '-lam', type=float, default=1e-3, help='piecewise clustering strength')
-parser.add_argument('--resume', action="store_true", help='resume training or evaluate from outdir path')
+parser.add_argument('--eval', action="store_true", help='load saved model weights from outdir path to evaluate only')
+parser.add_argument('--resume', action="store_true", help='resume training from outdir path')
 parser.add_argument('--finetune', action="store_true", help='for finetuning pre-trained imagenet models')
 parser.add_argument('--ft_path', type=str, default='results/imagenet/resnet50_quan8/', help='finetune model path')
-parser.add_argument('--eval', action="store_true", help='load saved model weights from path to evaluate only')
 parser.add_argument('--seed', type=int, default=1, metavar='S', help='random seed (default: 1)')
 args = parser.parse_args()
 
@@ -201,6 +201,8 @@ def main():
             log(log_filename, "{}\t{:.3}\t{:.3}\t{:.3}\t{:.3}\t{:.3}\t{:.3}".format(
                 epoch, str(datetime.timedelta(seconds=(after - before))), lr, train_loss, train_acc, test_loss, test_acc))
     else:
+        eval_best = torch.load(args.outdir + 'model_best.pth.tar', map_location=device)
+        model.load_state_dict(eval_best['state_dict'])
         test(test_loader, model, criterion, C)
 
 
