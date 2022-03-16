@@ -34,7 +34,7 @@ You can use `main.py` to train and perform benign evaluations of quantized netwo
 
 ## Saved model weights
 
-Our OCM models trained on CIFAR-10 and ImageNet that are used for the evaluations in the paper.
+We share the OCM models trained on CIFAR-10 and ImageNet that are used for evaluations in the paper.
 Different evaluations may naturally result in slight differences in the presented numbers.
 
 * CIFAR-10 with ResNet-20 (8-bit): 
