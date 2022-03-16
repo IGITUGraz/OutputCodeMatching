@@ -31,7 +31,7 @@ parser.add_argument('--gpu', default="0", type=str, help='id(s) for CUDA_VISIBLE
 parser.add_argument('--print-freq', default=250, type=int, help='print frequency (default: 250)')
 parser.add_argument('--clustering', '-pc', action='store_true', help='add piecewise clustering regularization')
 parser.add_argument('--lambda_coeff', '-lam', type=float, default=1e-3, help='piecewise clustering strength')
-parser.add_argument('--resume', action="store_true", help='resume training from path')
+parser.add_argument('--resume', action="store_true", help='resume training or evaluate from outdir path')
 parser.add_argument('--finetune', action="store_true", help='for finetuning pre-trained imagenet models')
 parser.add_argument('--ft_path', type=str, default='results/imagenet/resnet50_quan8/', help='finetune model path')
 parser.add_argument('--eval', action="store_true", help='load saved model weights from path to evaluate only')
