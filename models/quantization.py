@@ -97,7 +97,7 @@ class quan_Linear(nn.Linear):
         self.b_w = nn.Parameter(2**torch.arange(start=self.N_bits - 1, end=-1, step=-1).unsqueeze(-1).float(),
                                 requires_grad=False)
 
-        self.b_w[0] = -self.b_w[0]  #in-place reverse
+        self.b_w[0] = -self.b_w[0]  # in-place reverse
 
     def forward(self, input):
         if self.inf_with_weight:

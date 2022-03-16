@@ -1,11 +1,6 @@
 import math
 from models.quantization import *
 
-## This script is composed from the following public repositories:
-## https://github.com/jiawangbai/TA-LBF
-## https://github.com/adnansirajrakin/T-BFA
-
-
 __all__ = ['CifarResNet', 'ResNet', 'resnet20_quan', 'resnet50_quan', 'resnet20_quan_mid', 'resnet50_quan_mid']
 
 
