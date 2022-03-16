@@ -23,21 +23,12 @@ class CIFAR100:
         self.tr_test = transforms.Compose(self.tr_test)
 
         if args.ocm:
-            if args.randcode:
-                self.C = np.ones((args.num_classes, args.code_length), np.float32)
-                for c in range(args.num_classes):
-                    how_much_negs = int(args.code_length // 4) + np.random.choice(int(args.code_length // 2))
-                    picks = np.random.choice(args.code_length, how_much_negs, replace=False)
-                    self.C[c, picks] = -1
-                print(self.C)
-                self.tr_target = [transforms.Lambda(lambda y: torch.LongTensor(self.C[y]))]
-            else:
-                self.C = hadamard(args.code_length).astype(np.float32)
-                self.C = np.delete(self.C, 0, axis=0)
-                np.random.shuffle(self.C)
-                self.C = self.C[:args.num_classes]
-                print(self.C)
-                self.tr_target = [transforms.Lambda(lambda y: torch.LongTensor(self.C[y]))]
+            self.C = hadamard(args.code_length).astype(np.float32)
+            self.C = np.delete(self.C, 0, axis=0)
+            np.random.shuffle(self.C)
+            self.C = self.C[:args.num_classes]
+            print(self.C)
+            self.tr_target = [transforms.Lambda(lambda y: torch.LongTensor(self.C[y]))]
         else:
             self.tr_target = [transforms.Lambda(lambda y: y)]
 
