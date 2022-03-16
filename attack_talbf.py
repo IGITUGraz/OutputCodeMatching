@@ -20,11 +20,10 @@ parser.add_argument('--num_classes', '-c', default=10, type=int, help='number of
 parser.add_argument('--arch', '-a', type=str, default='resnet20_quan', help='model architecture')
 parser.add_argument('--bits', type=int, default=8, help='quantization bits')
 parser.add_argument('--ocm', action='store_true', help='output layer coding with bit strings')
-parser.add_argument('--randcode', action="store_true", help='enable random output code matching')
-parser.add_argument('--output_act', type=str, default='linear', help='output act. (either linear and tanh is supported)')
+parser.add_argument('--output_act', type=str, default='linear', help='output act. (only linear and tanh is supported)')
 parser.add_argument('--code_length', '-cl', default=16, type=int, help='length of codewords')
 parser.add_argument('--outdir', type=str, default='results/cifar10/resnet20_quan8_OCM64/', help='folder where the model is saved')
-parser.add_argument('--batch', '-b', default=128, type=int, metavar='N', help='batchsize (default: 128)')
+parser.add_argument('--batch', '-b', default=128, type=int, metavar='N', help='Mini-batch size (default: 128)')
 parser.add_argument('--gpu', default="0", type=str, help='id(s) for CUDA_VISIBLE_DEVICES')
 parser.add_argument('--attack_info', type=str, default='cifar10_talbf.txt', help='attack info list')
 parser.add_argument('--init-k', '-init_k', default=5, type=float)
@@ -88,7 +87,7 @@ class AugLag(nn.Module):
 
     def predict(self, x):
         x = self.forward(x)
-        x = 2 * x - 1 if self.args.ocm else x       # rescale OCM output back to [-1, 1] for our natural way of prediction
+        x = 2 * x - 1 if self.args.ocm else x       # rescale OCM output back to [-1, 1] for our usual way of prediction
         x = F.softmax(torch.log(F.relu(torch.matmul(x, self.C.T)) + 1e-6)) if self.args.ocm else F.softmax(x)
         return x
 
