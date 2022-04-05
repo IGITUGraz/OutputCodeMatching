@@ -1,6 +1,6 @@
 # Improving Robustness Against Stealthy Weight Bit-Flip Attacks by Output Code Matching
 
-This is the code repository of the following [paper](http://...) to train deep neural networks with output code matching (OCM) to improve robustness against stealthy adversarial weight bit-flip attacks.
+This is the code repository of the following [paper](https://igi-web.tugraz.at/PDF/OzdenizciLegenstein_CVPR2022.pdf) to train deep neural networks with output code matching (OCM) to improve robustness against stealthy adversarial weight bit-flip attacks.
 
 "Improving Robustness Against Stealthy Weight Bit-Flip Attacks by Output Code Matching"\
 <em>Ozan Özdenizci, Robert Legenstein</em>\
